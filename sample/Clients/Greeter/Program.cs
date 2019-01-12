@@ -5,7 +5,7 @@ using Common;
 using Grpc.Core;
 using Greet;
 
-namespace GRPCGreeterClient
+namespace Sample.Clients
 {
     class Program
     {

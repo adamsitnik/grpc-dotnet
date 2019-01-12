@@ -4,7 +4,7 @@ using Common;
 using Grpc.Core;
 using Count;
 
-namespace GRPCClientSample
+namespace Sample.Clients
 {
     class Program
     {

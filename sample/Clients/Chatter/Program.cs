@@ -5,7 +5,7 @@ using Common;
 using Grpc.Core;
 using Chat;
 
-namespace GRPCChatterClient
+namespace Sample.Clients
 {
     class Program
     {

@@ -1,12 +1,30 @@
-﻿using System.Threading.Tasks;
+﻿#region Copyright notice and license
+
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#endregion
+
+using System.Threading.Tasks;
 using Google.Protobuf;
 using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Grpc.AspNetCore
+namespace Grpc.AspNetCore.Internal
 {
-    internal class ClientStreamingServerCallHandler<TRequest, TResponse, TImplementation> : IServerCallHandler
+    internal class DuplexStreamingServerCallHandler<TRequest, TResponse, TImplementation> : IServerCallHandler
         where TRequest : IMessage
         where TResponse : IMessage
         where TImplementation : class
@@ -14,7 +32,7 @@ namespace Grpc.AspNetCore
         private MessageParser _inputParser;
         private string _methodName;
 
-        public ClientStreamingServerCallHandler(MessageParser inputParser, string methodName)
+        public DuplexStreamingServerCallHandler(MessageParser inputParser, string methodName)
         {
             _methodName = methodName;
             _inputParser = inputParser;
@@ -33,18 +51,13 @@ namespace Grpc.AspNetCore
             var handlerMethod = typeof(TImplementation).GetMethod(_methodName);
 
             // Invoke procedure
-            var response = await (Task<TResponse>)handlerMethod.Invoke(
+            await (Task)handlerMethod.Invoke(
                 service,
-                new object[]
-                {
+                new object[] {
                     new HttpContextStreamReader<TRequest>(httpContext, bytes => (TRequest)_inputParser.ParseFrom(bytes)),
+                    new HttpContextStreamWriter<TResponse>(httpContext, response => response.ToByteArray()),
                     null
                 });
-
-            // TODO: make sure the response is not null
-            var responsePayload = response.ToByteArray();
-
-            await StreamUtils.WriteMessageAsync(httpContext.Response.Body, responsePayload, 0, responsePayload.Length);
 
             httpContext.Response.AppendTrailer("grpc-status", ((int)StatusCode.OK).ToString());
         }
