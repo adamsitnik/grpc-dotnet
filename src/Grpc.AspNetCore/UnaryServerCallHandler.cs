@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Google.Protobuf;
 using Grpc.Core;
-using GRPCServer.Dotnet;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 

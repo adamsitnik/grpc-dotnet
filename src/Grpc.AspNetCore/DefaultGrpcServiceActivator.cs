@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GRPCServer.Dotnet
+namespace Grpc.AspNetCore
 {
     public class DefaultGrpcServiceActivator<TGrpcService> : IGrpcServiceActivator<TGrpcService> where TGrpcService : class
     {
@@ -17,7 +17,7 @@ namespace GRPCServer.Dotnet
 
         public TGrpcService Create()
         {
-            Debug.Assert(!_created.HasValue, "hub activators must not be reused.");
+            Debug.Assert(!_created.HasValue, "Grpc service activator must not be reused.");
 
             _created = false;
             var service = _serviceProvider.GetService<TGrpcService>();

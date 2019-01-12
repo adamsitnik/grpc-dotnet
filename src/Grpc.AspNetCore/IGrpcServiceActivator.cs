@@ -1,4 +1,4 @@
-﻿namespace GRPCServer.Dotnet
+﻿namespace Grpc.AspNetCore
 {
     interface IGrpcServiceActivator<TGrpcService> where TGrpcService : class
     {

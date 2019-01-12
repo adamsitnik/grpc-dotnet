@@ -1,5 +1,5 @@
 ﻿using System;
-using GRPCServer.Dotnet;
+using Grpc.AspNetCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection

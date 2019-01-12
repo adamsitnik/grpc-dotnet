@@ -49,6 +49,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3E045D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc.AspNetCore", "src\Grpc.AspNetCore\Grpc.AspNetCore.csproj", "{5E6197EE-9298-4922-B612-D6D933AB6164}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{20F5CF21-E075-4B5E-AFF4-CECD6561D524}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc.AspNetCore.Tests", "test\Grpc.AspNetCore.Tests\Grpc.AspNetCore.Tests.csproj", "{B721E219-5A43-4334-B1A3-A8B1D9E498E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +83,10 @@ Global
 		{5E6197EE-9298-4922-B612-D6D933AB6164}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E6197EE-9298-4922-B612-D6D933AB6164}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E6197EE-9298-4922-B612-D6D933AB6164}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B721E219-5A43-4334-B1A3-A8B1D9E498E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B721E219-5A43-4334-B1A3-A8B1D9E498E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B721E219-5A43-4334-B1A3-A8B1D9E498E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B721E219-5A43-4334-B1A3-A8B1D9E498E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +103,7 @@ Global
 		{409A27EF-A5E9-45C5-9041-7210C6C8FC17} = {EA330592-E294-4A29-B60E-196AA05831DD}
 		{3E045DF6-62EF-4331-B712-9CF5EC56F04C} = {EA330592-E294-4A29-B60E-196AA05831DD}
 		{5E6197EE-9298-4922-B612-D6D933AB6164} = {8C62055F-8CD7-4859-9001-634D544DF2AE}
+		{B721E219-5A43-4334-B1A3-A8B1D9E498E6} = {20F5CF21-E075-4B5E-AFF4-CECD6561D524}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CD5C2B19-49B4-480A-990C-36D98A719B07}
