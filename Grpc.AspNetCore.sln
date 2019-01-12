@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{EA3305
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8C62055F-8CD7-4859-9001-634D544DF2AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc.Common", "src\Grpc.Common\Grpc.Common.csproj", "{A06B88C7-8CD1-4C5F-9DE7-5D66A252DAED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc.Core.Api", "src\Grpc.Common\Grpc.Core.Api.csproj", "{A06B88C7-8CD1-4C5F-9DE7-5D66A252DAED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proto", "Proto", "{AC41B2B2-62D9-454E-8521-F71E331B07F3}"
 	ProjectSection(SolutionItems) = preProject

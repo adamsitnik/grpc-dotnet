@@ -1,10 +1,9 @@
 ﻿using System;
 using Google.Protobuf.Reflection;
-using GRPCServer.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
-namespace GRPCServer.Dotnet
+namespace Grpc.AspNetCore
 {
     public static class GrpcRouteBuilderExtensions
     {
