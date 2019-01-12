@@ -17,4 +17,4 @@ set -ex
 
 dotnet build
 
-echo "Please add tests."
+dotnet test
