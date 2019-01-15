@@ -22,17 +22,17 @@ using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server.Internal
 {
-    internal class DuplexStreamingServerCallHandler<TRequest, TResponse, TImplementation> : IServerCallHandler
+    internal class ServerStreamingServerCallHandler<TRequest, TResponse, TImplementation> : IServerCallHandler
         where TRequest : IMessage
         where TResponse : IMessage
         where TImplementation : class
     {
-        private MessageParser _inputParser;
-        private string _methodName;
+        private readonly string _methodName;
+        private readonly MessageParser _inputParser;
 
-        public DuplexStreamingServerCallHandler(MessageParser inputParser, string methodName)
+        public ServerStreamingServerCallHandler(MessageParser inputParser, string methodName)
         {
             _methodName = methodName;
             _inputParser = inputParser;
@@ -42,6 +42,12 @@ namespace Grpc.AspNetCore.Internal
         {
             httpContext.Response.ContentType = "application/grpc";
             httpContext.Response.Headers.Append("grpc-encoding", "identity");
+
+            var requestPayload = await StreamUtils.ReadMessageAsync(httpContext.Request.Body);
+            // TODO: make sure the payload is not null
+            var request = (TRequest)_inputParser.ParseFrom(requestPayload);
+
+            // TODO: make sure there are no more request messages.
 
             // Activate the implementation type via DI.
             var activator = httpContext.RequestServices.GetRequiredService<IGrpcServiceActivator<TImplementation>>();
@@ -53,8 +59,9 @@ namespace Grpc.AspNetCore.Internal
             // Invoke procedure
             await (Task)handlerMethod.Invoke(
                 service,
-                new object[] {
-                    new HttpContextStreamReader<TRequest>(httpContext, bytes => (TRequest)_inputParser.ParseFrom(bytes)),
+                new object[]
+                {
+                    request,
                     new HttpContextStreamWriter<TResponse>(httpContext, response => response.ToByteArray()),
                     null
                 });

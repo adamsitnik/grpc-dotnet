@@ -17,7 +17,7 @@
 #endregion
 
 using System;
-using Grpc.AspNetCore.Internal;
+using Grpc.AspNetCore.Server.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using ProtobufServiceDescriptor = Google.Protobuf.Reflection.ServiceDescriptor;

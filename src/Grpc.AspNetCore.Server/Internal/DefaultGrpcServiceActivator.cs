@@ -20,7 +20,7 @@ using System;
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server.Internal
 {
     internal class DefaultGrpcServiceActivator<TGrpcService> : IGrpcServiceActivator<TGrpcService> where TGrpcService : class
     {

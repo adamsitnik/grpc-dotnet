@@ -23,15 +23,15 @@ using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server.Internal
 {
     internal class ClientStreamingServerCallHandler<TRequest, TResponse, TImplementation> : IServerCallHandler
         where TRequest : IMessage
         where TResponse : IMessage
         where TImplementation : class
     {
-        private MessageParser _inputParser;
-        private string _methodName;
+        private readonly MessageParser _inputParser;
+        private readonly string _methodName;
 
         public ClientStreamingServerCallHandler(MessageParser inputParser, string methodName)
         {

@@ -19,9 +19,9 @@
 using NUnit.Framework;
 using Moq;
 using System;
-using Grpc.AspNetCore.Internal;
+using Grpc.AspNetCore.Server.Internal;
 
-namespace Grpc.AspNetCore.Tests
+namespace Grpc.AspNetCore.Server.Tests
 {
     public class DefaultGrpcServiceActivatorTests
     {

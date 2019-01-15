@@ -16,9 +16,9 @@
 
 #endregion
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server
 {
-    internal interface IGrpcServiceActivator<TGrpcService> where TGrpcService : class
+    public interface IGrpcServiceActivator<TGrpcService> where TGrpcService : class
     {
         TGrpcService Create();
         void Release(TGrpcService service);

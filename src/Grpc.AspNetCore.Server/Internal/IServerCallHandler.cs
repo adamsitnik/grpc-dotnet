@@ -20,7 +20,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server.Internal
 {
     internal interface IServerCallHandler
     {

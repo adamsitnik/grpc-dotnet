@@ -20,13 +20,13 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server.Internal
 {
     // utilities for parsing gRPC messages from request/response streams
     // NOTE: implementations are not efficient and are very GC heavy
     internal class StreamUtils
     {
-        const int MessageDelimiterSize = 4;  // how many bytes it takes to encode "Message-Length"
+        private static readonly int MessageDelimiterSize = 4;  // how many bytes it takes to encode "Message-Length"
 
         // reads a grpc message
         // returns null if there are no more messages.

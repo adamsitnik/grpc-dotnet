@@ -21,12 +21,12 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server.Internal
 {
     internal class HttpContextStreamReader<TRequest> : IAsyncStreamReader<TRequest>
     {
-        private HttpContext _httpContext;
-        private Func<byte[], TRequest> _deserializer;
+        private readonly HttpContext _httpContext;
+        private readonly Func<byte[], TRequest> _deserializer;
 
         public HttpContextStreamReader(HttpContext context, Func<byte[], TRequest> deserializer)
         {
@@ -35,7 +35,6 @@ namespace Grpc.AspNetCore.Internal
         }
 
         public TRequest Current { get; private set; }
-
 
         public ValueTask DisposeAsync()
         {

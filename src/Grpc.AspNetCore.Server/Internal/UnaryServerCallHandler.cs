@@ -22,17 +22,17 @@ using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server.Internal
 {
-    internal class ServerStreamingServerCallHandler<TRequest, TResponse, TImplementation> : IServerCallHandler
-        where TRequest : IMessage
-        where TResponse : IMessage
-        where TImplementation : class
+    internal class UnaryServerCallHandler<TRequest, TResponse, TImplementation> : IServerCallHandler
+           where TRequest : IMessage
+           where TResponse : IMessage
+           where TImplementation : class
     {
-        private string _methodName;
-        private MessageParser _inputParser;
+        private readonly string _methodName;
+        private readonly MessageParser _inputParser;
 
-        public ServerStreamingServerCallHandler(MessageParser inputParser, string methodName)
+        public UnaryServerCallHandler(MessageParser inputParser, string methodName)
         {
             _methodName = methodName;
             _inputParser = inputParser;
@@ -57,16 +57,15 @@ namespace Grpc.AspNetCore.Internal
             var handlerMethod = typeof(TImplementation).GetMethod(_methodName);
 
             // Invoke procedure
-            await (Task)handlerMethod.Invoke(
-                service,
-                new object[]
-                {
-                    request,
-                    new HttpContextStreamWriter<TResponse>(httpContext, response => response.ToByteArray()),
-                    null
-                });
+            var response = await (Task<TResponse>)handlerMethod.Invoke(service, new object[] { request, null });
+
+            // TODO: make sure the response is not null
+            var responsePayload = response.ToByteArray();
+
+            await StreamUtils.WriteMessageAsync(httpContext.Response.Body, responsePayload, 0, responsePayload.Length);
 
             httpContext.Response.AppendTrailer("grpc-status", ((int)StatusCode.OK).ToString());
         }
     }
+
 }

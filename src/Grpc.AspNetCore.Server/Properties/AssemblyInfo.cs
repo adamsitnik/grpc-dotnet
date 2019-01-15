@@ -3,4 +3,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Grpc.AspNetCore.Tests")]
+[assembly: InternalsVisibleTo("Grpc.AspNetCore.Server.Tests")]

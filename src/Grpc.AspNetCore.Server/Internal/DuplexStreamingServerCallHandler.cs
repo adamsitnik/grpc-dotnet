@@ -22,17 +22,17 @@ using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server.Internal
 {
-    internal class UnaryServerCallHandler<TRequest, TResponse, TImplementation> : IServerCallHandler
-           where TRequest : IMessage
-           where TResponse : IMessage
-           where TImplementation : class
+    internal class DuplexStreamingServerCallHandler<TRequest, TResponse, TImplementation> : IServerCallHandler
+        where TRequest : IMessage
+        where TResponse : IMessage
+        where TImplementation : class
     {
-        private string _methodName;
-        private MessageParser _inputParser;
+        private readonly MessageParser _inputParser;
+        private readonly string _methodName;
 
-        public UnaryServerCallHandler(MessageParser inputParser, string methodName)
+        public DuplexStreamingServerCallHandler(MessageParser inputParser, string methodName)
         {
             _methodName = methodName;
             _inputParser = inputParser;
@@ -43,12 +43,6 @@ namespace Grpc.AspNetCore.Internal
             httpContext.Response.ContentType = "application/grpc";
             httpContext.Response.Headers.Append("grpc-encoding", "identity");
 
-            var requestPayload = await StreamUtils.ReadMessageAsync(httpContext.Request.Body);
-            // TODO: make sure the payload is not null
-            var request = (TRequest)_inputParser.ParseFrom(requestPayload);
-
-            // TODO: make sure there are no more request messages.
-
             // Activate the implementation type via DI.
             var activator = httpContext.RequestServices.GetRequiredService<IGrpcServiceActivator<TImplementation>>();
             var service = activator.Create();
@@ -57,15 +51,15 @@ namespace Grpc.AspNetCore.Internal
             var handlerMethod = typeof(TImplementation).GetMethod(_methodName);
 
             // Invoke procedure
-            var response = await (Task<TResponse>)handlerMethod.Invoke(service, new object[] { request, null });
-
-            // TODO: make sure the response is not null
-            var responsePayload = response.ToByteArray();
-
-            await StreamUtils.WriteMessageAsync(httpContext.Response.Body, responsePayload, 0, responsePayload.Length);
+            await (Task)handlerMethod.Invoke(
+                service,
+                new object[] {
+                    new HttpContextStreamReader<TRequest>(httpContext, bytes => (TRequest)_inputParser.ParseFrom(bytes)),
+                    new HttpContextStreamWriter<TResponse>(httpContext, response => response.ToByteArray()),
+                    null
+                });
 
             httpContext.Response.AppendTrailer("grpc-status", ((int)StatusCode.OK).ToString());
         }
     }
-
 }

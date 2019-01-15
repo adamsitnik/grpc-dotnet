@@ -21,12 +21,12 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 
-namespace Grpc.AspNetCore.Internal
+namespace Grpc.AspNetCore.Server.Internal
 {
     internal class HttpContextStreamWriter<TResponse> : IServerStreamWriter<TResponse>
     {
-        HttpContext _httpContext;
-        Func<TResponse, byte[]> _serializer;
+        private readonly HttpContext _httpContext;
+        private readonly Func<TResponse, byte[]> _serializer;
 
         public HttpContextStreamWriter(HttpContext context, Func<TResponse, byte[]> serializer)
         {
