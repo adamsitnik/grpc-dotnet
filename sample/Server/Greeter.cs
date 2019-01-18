@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Greet;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 class GreeterService : Greeter.GreeterBase
 {
