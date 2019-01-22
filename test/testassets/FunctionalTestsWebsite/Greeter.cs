@@ -23,7 +23,7 @@ using Microsoft.Extensions.Logging;
 
 class GreeterService : Greeter.GreeterBase
 {
-    private ILogger _logger;
+    private readonly ILogger _logger;
 
     public GreeterService(ILoggerFactory loggerFactory)
     {

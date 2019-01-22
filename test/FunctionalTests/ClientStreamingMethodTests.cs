@@ -52,14 +52,17 @@ namespace Grpc.AspNetCore.FunctionalTests
             // Assert
             Assert.IsFalse(responseTask.IsCompleted, "Server should wait for client to finish streaming");
 
+            Fixture.Signal.Reset();
             requestStream.SendData(ms.ToArray());
-            await Task.Delay(100);
+            await Fixture.Signal.Task.DefaultTimeout();
 
+            Fixture.Signal.Reset();
             requestStream.SendData(ms.ToArray());
-            await Task.Delay(100);
+            await Fixture.Signal.Task.DefaultTimeout();
 
+            Fixture.Signal.Reset();
             requestStream.SendData(Array.Empty<byte>());
-            await Task.Delay(100);
+            await Fixture.Signal.Task.DefaultTimeout();
 
             var response = await responseTask.DefaultTimeout();
 

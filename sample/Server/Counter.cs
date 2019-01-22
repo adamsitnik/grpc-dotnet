@@ -8,8 +8,8 @@ namespace GRPCServer
 {
     public class CounterService : Counter.CounterBase
     {
-        private ILogger _logger;
-        private IncrementingCounter _counter;
+        private readonly ILogger _logger;
+        private readonly IncrementingCounter _counter;
 
         public CounterService(IncrementingCounter counter, ILoggerFactory loggerFactory)
         {

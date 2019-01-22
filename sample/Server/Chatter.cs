@@ -8,7 +8,7 @@ namespace GRPCServer
 {
     public class ChatterService : Chatter.ChatterBase
     {
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public ChatterService(ILoggerFactory loggerFactory)
         {

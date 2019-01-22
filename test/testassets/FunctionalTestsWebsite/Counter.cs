@@ -21,17 +21,20 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Count;
 using Microsoft.Extensions.Logging;
+using FunctionalTestsWebsite.Infrastructure;
 
 namespace FunctionalTestsWebsite
 {
     public class CounterService : Counter.CounterBase
     {
-        private ILogger _logger;
-        private IncrementingCounter _counter;
+        private readonly ILogger _logger;
+        private readonly IncrementingCounter _counter;
+        private readonly Signaler _signaler;
 
-        public CounterService(IncrementingCounter counter, ILoggerFactory loggerFactory)
+        public CounterService(IncrementingCounter counter, ILoggerFactory loggerFactory, Signaler signaler)
         {
             _counter = counter;
+            _signaler = signaler;
             _logger = loggerFactory.CreateLogger<CounterService>();
         }
 
@@ -49,7 +52,13 @@ namespace FunctionalTestsWebsite
                 _logger.LogInformation($"Incrementing count by {requestStream.Current.Count}");
 
                 _counter.Increment(requestStream.Current.Count);
+
+                // Signal client that message was received
+                _signaler.Set();
             }
+
+            // Signal client that exiting
+            _signaler.Set();
 
             return new CounterReply { Count = _counter.Count };
         }

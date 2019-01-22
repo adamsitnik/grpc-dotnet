@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FunctionalTestsWebsite
 {
@@ -35,6 +36,10 @@ namespace FunctionalTestsWebsite
         {
             services.AddGrpc();
             services.AddSingleton<IncrementingCounter>();
+
+            // When the site is run from the test project a signaler will already be registered
+            // This will add a default one if the site is run standalone
+            services.TryAddSingleton<Signaler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
