@@ -21,7 +21,6 @@
 
     <ProjectReference Include="..\..\..\src\Grpc.AspNetCore.Server\Grpc.AspNetCore.Server.csproj" />
 
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="3.0.0-preview-18579-0056" />
     <PackageReference Include="Grpc.Tools" Version="1.17.0-pre3" />
   </ItemGroup>
 

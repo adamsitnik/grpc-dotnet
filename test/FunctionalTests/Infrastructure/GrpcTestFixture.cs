@@ -23,14 +23,14 @@ using Microsoft.AspNetCore.TestHost;
 
 namespace Grpc.AspNetCore.FunctionalTests.Infrastructure
 {
-    public class GrpcTestFixture<TStartup> : IDisposable
+    public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
     {
         private readonly TestServer _server;
 
         public GrpcTestFixture()
         {
             var builder = new WebHostBuilder()
-                .UseStartup(typeof(TStartup));
+                .UseStartup<TStartup>();
 
             _server = new TestServer(builder);
 
@@ -40,19 +40,10 @@ namespace Grpc.AspNetCore.FunctionalTests.Infrastructure
 
         public HttpClient Client { get; }
 
-        public HttpClient CreateClient(string baseAddress)
-        {
-            var client = _server.CreateClient();
-            client.BaseAddress = new Uri(baseAddress);
-
-            return client;
-        }
-
         public void Dispose()
         {
             Client.Dispose();
             _server.Dispose();
         }
     }
-
 }
