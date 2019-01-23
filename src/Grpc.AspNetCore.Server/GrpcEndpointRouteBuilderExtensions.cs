@@ -53,7 +53,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 if (bindService == null)
                 {
-                    throw new InvalidOperationException("Cannot locate BindService(ServiceBinderBase serviceBinder) method on generated Grpc service type.");
+                    throw new InvalidOperationException("Cannot locate BindService(ServiceBinderBase) method on generated gRPC service type.");
                 }
 
                 var serviceBinder = new GrpcServiceBinder<TService>(builder);
