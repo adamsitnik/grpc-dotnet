@@ -17,11 +17,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using Grpc.AspNetCore.Server.Internal;
-using Microsoft.AspNetCore.Builder;
+using Grpc.Core;
 using Microsoft.AspNetCore.Routing;
-using ProtobufServiceDescriptor = Google.Protobuf.Reflection.ServiceDescriptor;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -50,46 +48,20 @@ namespace Microsoft.Extensions.DependencyInjection
                 // We need to call Foo.BindService from the declaring type.
                 var declaringType = baseType?.DeclaringType;
 
-                // Get the descriptor
-                var descriptor = declaringType?.GetProperty("Descriptor")?.GetValue(null) as ProtobufServiceDescriptor;
-                if (descriptor == null)
+                // The method we want to call is public static void BindService(ServiceBinderBase serviceBinder)
+                var bindService = declaringType?.GetMethod("BindService", new[] { typeof(ServiceBinderBase) });
+
+                if (bindService == null)
                 {
-                    throw new InvalidOperationException("Cannot retrieve service descriptor.");
+                    throw new InvalidOperationException("Cannot locate BindService(ServiceBinderBase serviceBinder) method on generated Grpc service type.");
                 }
 
-                List<IEndpointConventionBuilder> endpointConventionBuilders = new List<IEndpointConventionBuilder>();
-                foreach (var method in descriptor.Methods)
-                {
-                    var inputType = method.InputType;
-                    var outputType = method.OutputType;
-                    object handler;
+                var serviceBinder = new GrpcServiceBinder<TService>(builder);
 
-                    if (method.IsClientStreaming && method.IsServerStreaming)
-                    {
-                        var handlerType = typeof(DuplexStreamingServerCallHandler<,,>).MakeGenericType(inputType.ClrType, outputType.ClrType, service);
-                        handler = Activator.CreateInstance(handlerType, new object[] { inputType.Parser, method.Name });
-                    }
-                    else if (method.IsClientStreaming)
-                    {
-                        var handlerType = typeof(ClientStreamingServerCallHandler<,,>).MakeGenericType(inputType.ClrType, outputType.ClrType, service);
-                        handler = Activator.CreateInstance(handlerType, new object[] { inputType.Parser, method.Name });
-                    }
-                    else if (method.IsServerStreaming)
-                    {
-                        var handlerType = typeof(ServerStreamingServerCallHandler<,,>).MakeGenericType(inputType.ClrType, outputType.ClrType, service);
-                        handler = Activator.CreateInstance(handlerType, new object[] { inputType.Parser, method.Name });
-                    }
-                    else
-                    {
-                        var handlerType = typeof(UnaryServerCallHandler<,,>).MakeGenericType(inputType.ClrType, outputType.ClrType, service);
-                        handler = Activator.CreateInstance(handlerType, new object[] { inputType.Parser, method.Name });
-                    }
+                // Invoke
+                bindService.Invoke(null, new object[] { serviceBinder });
 
-                    var conventionBuilder = builder.MapPost($"{method.Service.FullName}/{method.Name}", ((IServerCallHandler)handler).HandleCallAsync);
-                    endpointConventionBuilders.Add(conventionBuilder);
-                }
-
-                return new CompositeEndpointConventionBuilder(endpointConventionBuilders);
+                return new CompositeEndpointConventionBuilder(serviceBinder.EndpointConventionBuilders);
             }
             catch (Exception ex)
             {
