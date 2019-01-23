@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Common;
 using Grpc.Core;
 using Greet;
+using Grpc.Core.Logging;
 
 namespace Sample.Clients
 {
@@ -11,6 +12,10 @@ namespace Sample.Clients
     {
         static async Task Main(string[] args)
         {
+            //Environment.SetEnvironmentVariable("GRPC_TRACE", "api");
+            //Environment.SetEnvironmentVariable("GRPC_VERBOSITY", "debug");
+            //Grpc.Core.GrpcEnvironment.SetLogger(new ConsoleLogger());
+
             var channel = new Channel("localhost:50051", ClientResources.SslCredentials);
             var client = new Greeter.GreeterClient(channel);
 
