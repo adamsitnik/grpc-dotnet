@@ -16,15 +16,12 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Running;
 
-namespace Grpc.AspNetCore.Performance
+namespace Grpc.AspNetCore.Microbenchmarks
 {
-    public class DefaultCoreConfigAttribute : Attribute, IConfigSource
+    public class Program
     {
-        public IConfig Config => new DefaultCoreConfig();
+        static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
     }
 }

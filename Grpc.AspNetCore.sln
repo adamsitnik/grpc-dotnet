@@ -67,7 +67,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proto", "Proto", "{84125B9C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "perf", "perf", "{4163E1B3-4D75-46B4-9107-9A158FD708FC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc.AspNetCore.Performance", "perf\Grpc.AspNetCore.Performance\Grpc.AspNetCore.Performance.csproj", "{01C2E73D-CE9C-44B5-92D9-4E3B448106F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc.AspNetCore.Microbenchmarks", "perf\Grpc.AspNetCore.Microbenchmarks\Grpc.AspNetCore.Microbenchmarks.csproj", "{01C2E73D-CE9C-44B5-92D9-4E3B448106F0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BenchmarkServer", "perf\benchmarkapps\BenchmarkServer\BenchmarkServer.csproj", "{51200163-BAC5-4129-92EE-796F893929B4}"
 EndProject

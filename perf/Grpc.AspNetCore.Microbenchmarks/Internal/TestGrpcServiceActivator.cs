@@ -16,15 +16,27 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using BenchmarkDotNet.Running;
+using Grpc.AspNetCore.Server;
 
-namespace Grpc.AspNetCore.Performance
+namespace Grpc.AspNetCore.Microbenchmarks.Internal
 {
-    public class Program
+    public class TestGrpcServiceActivator<TGrpcService> : IGrpcServiceActivator<TGrpcService>
+        where TGrpcService : class
     {
-        static void Main(string[] args) => BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+        public readonly TGrpcService _service;
+
+        public TestGrpcServiceActivator(TGrpcService service)
+        {
+            _service = service;
+        }
+
+        public TGrpcService Create()
+        {
+            return _service;
+        }
+
+        public void Release(TGrpcService service)
+        {
+        }
     }
 }
