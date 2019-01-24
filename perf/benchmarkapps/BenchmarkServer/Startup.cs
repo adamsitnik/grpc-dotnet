@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace PerformanceBenchmark
+namespace BenchmarkServer
 {
     public class Startup
     {

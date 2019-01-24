@@ -26,7 +26,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace PerformanceBenchmark
+namespace BenchmarkServer
 {
     public class Program
     {
